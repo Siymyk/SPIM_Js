@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html ng-app="main">
+<head>
+    <title>Successive Parabolic Interpolation Method</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- styles -->
+    <link rel="stylesheet" href="styles.css">
+    <!--Bootstrap -->
+    <script src="bootstrap/jquery-3.2.1.slim.min.js"></script>
+    <script src="bootstrap/popper.min.js"></script>
+    <script src="bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <!-- mathjs -->
+    <script src="js/Math.js"></script>
+    <!-- Plot math -->
+    <script src="js/Plot.js"></script>
+    <!-- SPIM-->
+    <script src="js/SuccessiveParabolicInterpolationMethod.js"></script>
+</head>
+<body>
+    <div class="container"> 
+        <form name="input">
+        <div class="row">
+            <div class="col-1">
+            </div>
+            <div class="col-5">
+                <h3>Successive Parabolic Interpolation Method</h3>
+                <div class="form-group row">
+                <label for="fx" class="col-sm-2 col-form-label">f(x)</label>
+                    <div class="col-sm-10">
+                        <div class="dropdown"> 
+                            <input type="text" name="dropdownMenuButton" class="form-control dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="cos(x)">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" onclick="fx_dropdown('0.01*x^3+x^2-2*x-2');">0.01*x^3+x^2-2*x-2</a>
+                                <a class="dropdown-item" onclick="fx_dropdown('(x-sin(x))^2+x*3+2');">(x-sin(x))^2+x*3+2</a>
+                                <a class="dropdown-item" onclick="fx_dropdown('x^2-4*sin(x)');">x^2-4*sin(x)</a>
+                                <a class="dropdown-item" onclick="fx_dropdown('-4*x^2+2*x+6');">-4*x^2+2*x+6</a>
+                                <a class="dropdown-item" onclick="fx_dropdown('1500*x^3-0.001*x^2-0.01*x');">1500*x^3-0.001*x^2-0.01*x</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="a" class="col-sm-2 col-form-label">a</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="a" id="a" class="form-control" placeholder="точка a">
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="b" class="col-sm-2 col-form-label">b</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="b" id="b" class="form-control" placeholder="точка b">
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="c" class="col-sm-2 col-form-label">c</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="c" id="c" class="form-control" placeholder="точка с">
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="Epsilon" class="col-sm-2 col-form-label">Epsilon</label>
+                    <div class="col-sm-10">
+                    <input type="text" name="Epsilon" id="Epsilon" class="form-control" placeholder="Допустимая погрешность">
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="Max" class="col-sm-4 col-form-label">k_max</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="Max" id="Max" class="form-control" placeholder="Кол-во итераций">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="criterion" class="col-sm-2 col-form-label">Критерий поиска</label>
+                    <div id="radiobutton">
+                        <input type="radio" name="criterion" value="minimum"> Min
+                    </div>
+                    <div id="radiobutton">
+                        <input type="radio" name="criterion" value="maximum"> Max
+                    </div>
+                </div>
+                <div class="form-group row">
+                <label for="t_max" class="col-sm-4 col-form-label">t_max(мл.секундах)</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="t_max" id="t_max" class="form-control" placeholder="Ограничение по времени">
+                    </div>
+                </div>
+                <input type="button" name="subimt" class="btn btn-primary btn-block margened" value="Вычислить" onclick="SPIM();">
+            </div>
+            <div class="col-5">
+        
+            <!-- Output -->
+            <p id="progressBar">Прогресс выполнения</p>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+            <div class="form-group row">
+                <label for="x1" class="col-sm-1 col-form-label">x*</label>
+                <div class="col-sm-11">
+                    <input type="text" name="x1" id="x1" class="form-control" placeholder="Точка оптимума" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="yf1" class="col-sm-1 col-form-label">f(x*)</label>
+                <div class="col-sm-11">
+                    <input type="text" name="yf1" id="yf1" class="form-control" placeholder="Оптимум" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="absTol" class="col-sm-3 col-form-label">Abs(x1-x0)</label>
+                <div class="col-sm-9">
+                    <input type="text" name="absTol" id="absTol" class="form-control" placeholder="Абсолютная погрешность" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="timeWaste" class="col-sm-6 col-form-label">Затраченное время</label>
+                <div class="col-sm-6">
+                    <input type="text" name="timeWaste" id="timeWaste" size="40" class="form-control" placeholder="в миллисекундах" readonly>
+                </div>
+            </div>
+            <input type="reset" value="Сбросить" class="btn btn-warning btn-block margened">
+            <div class="form-group">
+                <textarea class="form-control" id="OutputText" rows="6" readonly></textarea>
+            </div>
+
+            </div>
+        </div>
+        </form>
+    </div>
+    <!-- Output Plot -->
+    <div id="plot"></div> 
+    <!-- Output Table -->
+    <table id="myTable"></table>
+</body>
+
+</html>

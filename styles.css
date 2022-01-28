@@ -1,0 +1,54 @@
+div{
+  background-color: ; 
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 5px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+  margin: 20px 0px 20px 0px;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #4CAF50;
+}
+.margened{
+	margin:20px 0px 20px 0px;
+}
+#radiobutton{
+	margin: 20px 20px 20px 70px;
+}
+input[type="radio"] {
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+    transform: scale(1.5);
+}
+#progressBar{
+	margin: 20px;
+}
+p{
+	text-align: center;
+	font-size: 30px;
+}
+h3{
+	text-align: center;
+	padding: 15px;
+}
+
